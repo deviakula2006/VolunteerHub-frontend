@@ -23,14 +23,16 @@ export default function MyApplications() {
 
   const statusColor = (status) => {
     switch (status) {
-      case "applied":
-        return "bg-blue-500/20 text-blue-400";
+      case "pending":
+        return "bg-amber-500/20 text-amber-400 border border-amber-500/20";
       case "shortlisted":
-        return "bg-yellow-500/20 text-yellow-400";
+        return "bg-yellow-500/20 text-yellow-400 border border-yellow-500/20";
       case "selected":
-        return "bg-emerald-500/20 text-emerald-400";
+        return "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20";
       case "completed":
-        return "bg-purple-500/20 text-purple-400";
+        return "bg-purple-500/20 text-purple-400 border border-purple-500/20";
+      case "rejected":
+        return "bg-red-500/20 text-red-400 border border-red-500/20";
       default:
         return "bg-white/10 text-white/60";
     }
