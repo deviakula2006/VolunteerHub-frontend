@@ -12,6 +12,7 @@ export default function CreateOpportunity() {
     location: "",
     start_date: "",
     end_date: "",
+    max_hours: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,6 +28,7 @@ export default function CreateOpportunity() {
         location: "",
         start_date: "",
         end_date: "",
+        max_hours: "",
       });
     } catch (err) {
       alert(err.response?.data?.error || "Error creating opportunity");
@@ -76,6 +78,14 @@ export default function CreateOpportunity() {
             />
 
             <div className="grid grid-cols-2 gap-4">
+              <InputField
+                label="Maximum Hours (Limit)"
+                type="number"
+                placeholder="e.g. 10"
+                value={form.max_hours}
+                onChange={(e) => setForm({ ...form, max_hours: e.target.value })}
+                required
+              />
               <InputField
                 label="Start Date"
                 type="date"
