@@ -8,9 +8,16 @@ import Register from "../pages/auth/Register";
 import VolunteerDashboard from "../pages/volunteer/VolunteerDashboard";
 import Explore from "../pages/volunteer/Explore";
 import MyApplications from "../pages/volunteer/MyApplications";
+import HoursTracker from "../pages/volunteer/HoursTracker";
+import Reviews from "../pages/volunteer/Reviews";
 
 import OrganizationDashboard from "../pages/organization/OrganizationDashboard";
 import ManageApplications from "../pages/organization/ManageApplications";
+import CreateOpportunity from "../pages/organization/CreateOpportunity";
+
+import Calendar from "../pages/shared/Calendar";
+import Messages from "../pages/shared/Messages";
+import Resources from "../pages/shared/Resources";
 
 import NotFound from "../pages/NotFound";
 
@@ -46,6 +53,22 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/volunteer/hours"
+        element={
+          <ProtectedRoute role="volunteer">
+            <HoursTracker />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/volunteer/reviews"
+        element={
+          <ProtectedRoute role="volunteer">
+            <Reviews />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Organization */}
       <Route
@@ -61,6 +84,40 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute role="organization">
             <ManageApplications />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/organization/create"
+        element={
+          <ProtectedRoute role="organization">
+            <CreateOpportunity />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Shared */}
+      <Route
+        path="/calendar"
+        element={
+          <ProtectedRoute>
+            <Calendar />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/messages"
+        element={
+          <ProtectedRoute>
+            <Messages />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/resources"
+        element={
+          <ProtectedRoute>
+            <Resources />
           </ProtectedRoute>
         }
       />

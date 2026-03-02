@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://volunteer-hub-backend-5z2n.onrender.com",
+  // Point to the local backend server you just started instead of production
+  baseURL: "http://localhost:5000/api",
 });
 
 api.interceptors.request.use((config) => {

@@ -6,10 +6,9 @@ export default function Sidebar() {
   const location = useLocation();
 
   const linkClass = (path) =>
-    `block px-4 py-2 rounded-xl transition ${
-      location.pathname === path
-        ? "bg-emerald-500 text-white"
-        : "text-white/70 hover:bg-white/10"
+    `block px-4 py-2 rounded-xl transition ${location.pathname === path
+      ? "bg-emerald-500 text-white"
+      : "text-white/70 hover:bg-white/10"
     }`;
 
   return (
@@ -33,6 +32,14 @@ export default function Sidebar() {
               <Link to="/volunteer/applications" className={linkClass("/volunteer/applications")}>
                 My Applications
               </Link>
+
+              <Link to="/volunteer/hours" className={linkClass("/volunteer/hours")}>
+                Hours Tracker
+              </Link>
+
+              <Link to="/volunteer/reviews" className={linkClass("/volunteer/reviews")}>
+                Reviews
+              </Link>
             </>
           )}
 
@@ -45,8 +52,27 @@ export default function Sidebar() {
               <Link to="/organization/manage" className={linkClass("/organization/manage")}>
                 Manage Applications
               </Link>
+
+              <Link to="/organization/create" className={linkClass("/organization/create")}>
+                Create Opportunity
+              </Link>
             </>
           )}
+
+          {/* Shared Links */}
+          <div className="pt-4 mt-4 border-t border-white/10">
+            <Link to="/calendar" className={linkClass("/calendar")}>
+              Calendar
+            </Link>
+
+            <Link to="/messages" className={linkClass("/messages")}>
+              Messages
+            </Link>
+
+            <Link to="/resources" className={linkClass("/resources")}>
+              Resources
+            </Link>
+          </div>
 
         </nav>
 

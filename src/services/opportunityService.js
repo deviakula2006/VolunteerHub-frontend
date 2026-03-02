@@ -1,22 +1,17 @@
 import api from "./api";
 
-export const getOpportunities = async () => {
-  const res = await api.get("/opportunities");
+export const getOpportunities = async (filters = {}) => {
+  const queryParams = new URLSearchParams(filters).toString();
+  const res = await api.get(`/opportunities${queryParams ? `?${queryParams}` : ''}`);
   return res.data;
 };
 
 export const applyToOpportunity = async (opportunity_id) => {
-  const token = localStorage.getItem("access_token");
+  const res = await api.post("/applications", { opportunity_id });
+  return res.data;
+};
 
-  const res = await api.post(
-    "/applications",
-    { opportunity_id },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-
+export const createOpportunity = async (data) => {
+  const res = await api.post("/opportunities", data);
   return res.data;
 };

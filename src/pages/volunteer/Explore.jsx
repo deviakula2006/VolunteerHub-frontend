@@ -1,15 +1,35 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
+import OpportunityCard from "../../components/oppurtunity/OpportunityCard";
+import InputField from "../../components/ui/InputField";
+import Loader from "../../components/ui/Loader";
 import api from "../../services/api";
+import { Search } from "lucide-react";
 
 export default function Explore() {
   const [opportunities, setOpportunities] = useState([]);
+  const [filteredOpps, setFilteredOpps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [appliedIds, setAppliedIds] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredOpps(opportunities);
+    } else {
+      const lowerQuery = searchQuery.toLowerCase();
+      const filtered = opportunities.filter(opp =>
+        (opp.title && opp.title.toLowerCase().includes(lowerQuery)) ||
+        (opp.location && opp.location.toLowerCase().includes(lowerQuery)) ||
+        (opp.description && opp.description.toLowerCase().includes(lowerQuery))
+      );
+      setFilteredOpps(filtered);
+    }
+  }, [searchQuery, opportunities]);
 
   const fetchData = async () => {
     try {
@@ -17,6 +37,7 @@ export default function Explore() {
       const appRes = await api.get("/applications/my");
 
       setOpportunities(oppRes.data);
+      setFilteredOpps(oppRes.data);
 
       const applied = appRes.data.map(app => app.opportunity_id);
       setAppliedIds(applied);
@@ -42,66 +63,57 @@ export default function Explore() {
     }
   };
 
+  const handleShare = (opp) => {
+    if (navigator.share) {
+      navigator.share({
+        title: opp.title,
+        text: `Check out this volunteer opportunity: ${opp.title} at ${opp.location}`,
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(`Check out this volunteer opportunity: ${opp.title} at ${opp.location}`);
+      alert("Link copied to clipboard!");
+    }
+  };
+
   return (
     <DashboardLayout>
-
-      <div className="p-8 space-y-8">
-
-        <h1 className="text-3xl font-bold text-white">
-          Explore Opportunities
-        </h1>
+      <div className="p-8 space-y-8 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Explore Opportunities</h1>
+            <p className="text-white/60">Find and apply for volunteer events that match your skills.</p>
+          </div>
+          <div className="w-full md:w-96">
+            <InputField
+              icon={Search}
+              placeholder="Search by title, location..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
 
         {loading ? (
-          <div className="text-white/60">Loading opportunities...</div>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-
-            {opportunities.map((opp) => (
-              <div
+          <Loader text="Finding opportunities..." />
+        ) : filteredOpps.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredOpps.map((opp) => (
+              <OpportunityCard
                 key={opp.id}
-                className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur-2xl p-6 shadow-xl text-white space-y-4"
-              >
-
-                <div className="space-y-1">
-                  <h2 className="text-xl font-semibold">
-                    {opp.title}
-                  </h2>
-
-                  <p className="text-white/60 text-sm">
-                    📍 {opp.location}
-                  </p>
-
-                  <p className="text-white/60 text-sm">
-                    🗓 {opp.start_date} - {opp.end_date}
-                  </p>
-                </div>
-
-                <div>
-                  {appliedIds.includes(opp.id) ? (
-                    <button
-                      disabled
-                      className="w-full bg-white/20 text-white/60 p-3 rounded-xl cursor-not-allowed"
-                    >
-                      Already Applied
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleApply(opp.id)}
-                      className="w-full bg-emerald-500 hover:bg-emerald-600 transition p-3 rounded-xl font-semibold shadow-lg"
-                    >
-                      Apply
-                    </button>
-                  )}
-                </div>
-
-              </div>
+                opportunity={opp}
+                isApplied={appliedIds.includes(opp.id)}
+                onApply={handleApply}
+                onShare={handleShare}
+              />
             ))}
-
+          </div>
+        ) : (
+          <div className="text-center py-20 bg-white/5 rounded-2xl border border-white/10">
+            <p className="text-white/60 text-lg">No opportunities found matching your search.</p>
           </div>
         )}
-
       </div>
-
     </DashboardLayout>
   );
 }
