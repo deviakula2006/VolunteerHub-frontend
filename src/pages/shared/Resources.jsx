@@ -140,41 +140,46 @@ export default function Resources() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             {resources.length === 0 ? (
-              <GlassCard className="col-span-full py-20 text-center opacity-50 border-white/5">
-                <p className="text-lg font-bold uppercase tracking-widest">No resources found</p>
-                <p className="text-xs mt-2">Be the first to share something impactful!</p>
-              </GlassCard>
+              <div className="col-span-full py-20 text-center bg-white/5 border border-white/10 rounded-2xl">
+                <p className="text-lg font-bold uppercase tracking-widest text-white/50">No resources found</p>
+                <p className="text-xs mt-2 text-white/30">Be the first to share something impactful!</p>
+              </div>
             ) : (
               resources.map((resource) => (
-                <GlassCard key={resource.id} className="flex flex-col group hover:border-emerald-500/30 transition-all duration-500 shadow-2xl">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3 text-emerald-400">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform duration-500">
-                        {resource.link.includes("youtube.com") || resource.link.includes("vimeo.com") ? (
+                <div key={resource.id} className="flex flex-col h-[280px] bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 hover:border-emerald-500/30 transition-all duration-300 group shadow-[0_0_20px_rgba(16,185,129,0.05)]">
+                  {/* Top icon + type */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform duration-300 shrink-0">
+                        {resource.link?.includes("youtube.com") || resource.link?.includes("vimeo.com") ? (
                           <Video className="w-5 h-5" />
                         ) : (
                           <BookOpen className="w-5 h-5" />
                         )}
                       </div>
-                      <span className="text-[10px] font-black uppercase tracking-widest opacity-60">
-                        {resource.link.includes("youtube.com") || resource.link.includes("vimeo.com") ? "video" : "article"}
+                      <span className="text-[10px] font-black uppercase tracking-widest text-white/40">
+                        {resource.link?.includes("youtube.com") || resource.link?.includes("vimeo.com") ? "video" : "article"}
                       </span>
                     </div>
                     <ExternalLink className="w-4 h-4 text-white/20 group-hover:text-emerald-400 transition-colors" />
                   </div>
 
-                  <h3 className="text-xl font-extrabold text-white mb-3 group-hover:text-emerald-400 transition-colors line-clamp-2 leading-tight">
+                  {/* Title — 2 lines max */}
+                  <h3 className="text-base font-extrabold text-white mb-2 line-clamp-2 leading-snug group-hover:text-emerald-400 transition-colors">
                     {resource.title}
                   </h3>
-                  <p className="text-white/50 text-sm mb-8 flex-1 leading-relaxed line-clamp-3">
-                    {resource.description}
+
+                  {/* Description — 2 lines max */}
+                  <p className="text-xs text-white/50 line-clamp-2 leading-relaxed mb-auto">
+                    {resource.description || "No description provided."}
                   </p>
 
-                  <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[8px] font-bold text-white/40">
+                  {/* Footer */}
+                  <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between shrink-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[9px] font-bold text-white/40 shrink-0">
                         {resource.author?.email?.charAt(0).toUpperCase() || "C"}
                       </div>
                       <span className="text-[10px] font-bold text-white/30 uppercase tracking-tighter truncate max-w-[100px]">
@@ -182,15 +187,15 @@ export default function Resources() {
                       </span>
                     </div>
                     <a
-                      href={resource.link.startsWith('http') ? resource.link : `https://${resource.link}`}
+                      href={resource.link?.startsWith('http') ? resource.link : `https://${resource.link}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-emerald-400 hover:border-emerald-500/30 hover:bg-emerald-500/5 text-[10px] font-black uppercase tracking-widest transition-all duration-300"
+                      className="shrink-0 px-4 py-1.5 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-emerald-400 hover:border-emerald-500/30 text-[10px] font-black uppercase tracking-widest transition-all duration-300"
                     >
                       Access
                     </a>
                   </div>
-                </GlassCard>
+                </div>
               ))
             )}
           </div>

@@ -138,7 +138,7 @@ export default function Explore() {
             ))}
           </div>
         ) : (
-          <GlassCard className="text-center py-24 border-white/5">
+          <div className="text-center py-24 bg-white/5 border border-white/10 rounded-2xl">
             <div className="text-white/60 text-lg mb-2">No matches found.</div>
             <p className="text-white/30 text-sm">Try adjusting your filters or search terms.</p>
             <button
@@ -147,7 +147,7 @@ export default function Explore() {
             >
               Reset All Filters
             </button>
-          </GlassCard>
+          </div>
         )}
       </div>
     </DashboardLayout>
