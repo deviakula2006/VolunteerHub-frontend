@@ -1,11 +1,11 @@
 import api from "./api";
 
-export const getMessages = async () => {
-  const res = await api.get("/messages");
+export const getGroupAnnouncements = async (groupId) => {
+  const res = await api.get(`/messages/group/${groupId}`);
   return res.data;
 };
 
-export const sendMessage = async (receiver_id, content) => {
-  const res = await api.post("/messages", { receiver_id, content });
+export const postAnnouncement = async (groupId, content) => {
+  const res = await api.post(`/messages/group/${groupId}`, { content });
   return res.data;
 };

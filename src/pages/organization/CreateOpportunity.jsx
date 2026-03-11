@@ -13,6 +13,7 @@ export default function CreateOpportunity() {
     start_date: "",
     end_date: "",
     max_hours: "",
+    category: "Environment",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,6 +30,7 @@ export default function CreateOpportunity() {
         start_date: "",
         end_date: "",
         max_hours: "",
+        category: "Environment",
       });
     } catch (err) {
       alert(err.response?.data?.error || "Error creating opportunity");
@@ -76,6 +78,23 @@ export default function CreateOpportunity() {
               onChange={(e) => setForm({ ...form, location: e.target.value })}
               required
             />
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-white/80 ml-1">Category / Required Skill</label>
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="w-full p-3 rounded-xl bg-white/10 border border-white/10 text-white focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 outline-none transition-all"
+              >
+                <option value="Environment" className="bg-slate-800">Environment</option>
+                <option value="Education" className="bg-slate-800">Education</option>
+                <option value="Health" className="bg-slate-800">Health</option>
+                <option value="Community" className="bg-slate-800">Community Outreach</option>
+                <option value="Technology" className="bg-slate-800">Technology</option>
+                <option value="Animals" className="bg-slate-800">Animals</option>
+                <option value="Event Planning" className="bg-slate-800">Event Planning</option>
+              </select>
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <InputField

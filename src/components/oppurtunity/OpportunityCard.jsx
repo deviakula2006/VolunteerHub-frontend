@@ -7,9 +7,19 @@ export default function OpportunityCard({ opportunity, isApplied, onApply, onSha
         <GlassCard className="flex flex-col h-full">
             <div className="flex-1 space-y-4">
                 <div className="flex justify-between items-start">
-                    <h2 className="text-xl font-bold text-white line-clamp-2">
-                        {opportunity.title}
-                    </h2>
+                    <div className="flex flex-col">
+                        <h2 className="text-xl font-extrabold text-white line-clamp-2 tracking-tight group-hover:text-emerald-400 transition-colors">
+                            {opportunity.title}
+                        </h2>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] text-white/40 font-mono tracking-tighter">
+                                OPP#{opportunity.id}
+                            </span>
+                            <span className="px-2 py-0.5 rounded bg-emerald-500/5 border border-emerald-500/10 text-[9px] text-emerald-500/40 font-mono tracking-tighter uppercase">
+                                ORG:MATCHED
+                            </span>
+                        </div>
+                    </div>
                     <button
                         onClick={() => onShare(opportunity)}
                         className="p-2 text-white/40 hover:text-emerald-400 hover:bg-white/5 rounded-full transition-colors"
@@ -23,6 +33,11 @@ export default function OpportunityCard({ opportunity, isApplied, onApply, onSha
                 </p>
 
                 <div className="space-y-2 pt-4">
+                    {opportunity.category && (
+                        <div className="inline-block bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-md mb-1">
+                            {opportunity.category}
+                        </div>
+                    )}
                     <div className="flex items-center text-sm text-white/70">
                         <MapPin className="w-4 h-4 mr-2 text-emerald-400" />
                         {opportunity.location || "Remote"}

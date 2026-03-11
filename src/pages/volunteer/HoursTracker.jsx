@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import GlassCard from "../../components/ui/GlassCard";
 import InputField from "../../components/ui/InputField";
@@ -7,9 +8,10 @@ import Loader from "../../components/ui/Loader";
 import api from "../../services/api";
 
 export default function HoursTracker() {
+  const [searchParams] = useSearchParams();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [opportunityId, setOpportunityId] = useState("");
+  const [opportunityId, setOpportunityId] = useState(searchParams.get("opportunityId") || "");
   const [hours, setHours] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -19,7 +21,7 @@ export default function HoursTracker() {
 
   const fetchLogs = async () => {
     try {
-      const res = await api.get("/hours");
+      const res = await api.get("/hours/my");
       setLogs(res.data);
     } catch (err) {
       console.error(err);
@@ -33,7 +35,15 @@ export default function HoursTracker() {
     if (!opportunityId || !hours) return;
     setIsSubmitting(true);
     try {
-      await api.post("/hours", { opportunity_id: parseInt(opportunityId), hours: parseInt(hours) });
+      // Check for duplicates in local state first for immediate UI feedback
+      const alreadyLogged = logs.some(log => log.opportunity_id === opportunityId);
+      if (alreadyLogged) {
+        alert("You have already logged hours for this opportunity.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      await api.post("/hours", { opportunity_id: opportunityId, hours: parseInt(hours) });
       setOpportunityId("");
       setHours("");
       fetchLogs();
@@ -60,8 +70,8 @@ export default function HoursTracker() {
               <form onSubmit={handleLogHours} className="space-y-4">
                 <InputField
                   label="Opportunity ID"
-                  type="number"
-                  placeholder="e.g. 1"
+                  type="text"
+                  placeholder="Paste the Opportunity ID here..."
                   value={opportunityId}
                   onChange={(e) => setOpportunityId(e.target.value)}
                   required

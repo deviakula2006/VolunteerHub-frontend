@@ -5,7 +5,7 @@ export const getMyReviews = async () => {
   return res.data;
 };
 
-export const addReview = async (opportunity_id, rating, comment) => {
-  const res = await api.post("/reviews", { opportunity_id, rating, comment });
+export const addReview = async (opportunity_id, type, comment) => {
+  const res = await api.post("/reviews", { opportunity_id, type, comment });
   return res.data;
 };
