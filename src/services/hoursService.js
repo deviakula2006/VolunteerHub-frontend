@@ -1,11 +1,17 @@
-import api from "./api";
+import axios from "axios";
 
-export const addHours = async (opportunity_id, hours) => {
-  const res = await api.post("/hours", { opportunity_id, hours });
-  return res.data;
-};
+const api = axios.create({
+  baseURL: "https://volunteer-hub-backend-52zn.onrender.com/api",
+});
 
-export const getMyHours = async () => {
-  const res = await api.get("/hours");
-  return res.data;
-};
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+export default api;
